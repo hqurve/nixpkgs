@@ -14608,6 +14608,8 @@ with pkgs;
 
   java-language-server = callPackage ../development/tools/java/java-language-server { };
 
+  jdt-ls = callPackage ../development/tools/java/jdt-ls { };
+
   jhiccup = callPackage ../development/tools/java/jhiccup { };
 
   valgrind = callPackage ../development/tools/analysis/valgrind {
