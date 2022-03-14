@@ -4,12 +4,12 @@ with python3Packages;
 
 buildPythonPackage rec {
   pname = "octave-kernel";
-  version = "0.32.0";
+  version = "0.34.1";
 
   src = fetchPypi {
     pname = "octave_kernel";
     inherit version;
-    sha256 = "0dfbxfcf3bz4jswnpkibnjwlkgy0y4j563nrhaqxv3nfa65bksif";
+    sha256 = "sha256-S3fFDdeVuBdlOj5v6pYJnyPUUFE8Ga1+w3LavLr/9v4=";
   };
 
   propagatedBuildInputs = [ metakernel ipykernel ];
