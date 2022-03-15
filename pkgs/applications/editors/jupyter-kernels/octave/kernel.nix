@@ -29,10 +29,12 @@ buildPythonPackage rec {
       --suffix PATH : $octave/bin
   '';
   preCheck = ''
-    mkdir home
-    export HOME=home
+    # mkdir home
+    # export HOME=home
     mkdir -p kernels/octave/
-    echo '${
+    cp octave_kernel/kernel.json kernels/octave/kernel.json
+
+    # echo '${
       builtins.toJSON {
         argv = ["${launcher}/bin/octave-kernel" "-f" "{connection_file}"];
         name = "octave";
@@ -40,9 +42,9 @@ buildPythonPackage rec {
       }
     }' > kernels/octave/kernel.json
 
-    echo hi
-    cat kernels/octave/kernel.json
-    echo hi2
+    # echo hi
+    # cat kernels/octave/kernel.json
+    # echo hi2
     export JUPYTER_PATH=$(pwd)
     
   '';
