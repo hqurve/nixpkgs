@@ -30,6 +30,7 @@ rec {
       --add-flags "-m octave_kernel" \
       --suffix PATH : $octave/bin
   '';
+  inherit kernel;
 
   sizedLogo = size: stdenv.mkDerivation {
     pname = "octave-logo-${size}x${size}.png";

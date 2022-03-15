@@ -1,4 +1,6 @@
-{ lib, octave, python3Packages }:
+{ lib, octave, python3Packages
+,pkgs
+}:
 
 with python3Packages;
 
@@ -12,13 +14,40 @@ buildPythonPackage rec {
     sha256 = "sha256-S3fFDdeVuBdlOj5v6pYJnyPUUFE8Ga1+w3LavLr/9v4=";
   };
 
-  propagatedBuildInputs = [ metakernel ipykernel ];
+  buildInputs = [ octave];
+  propagatedBuildInputs = [ metakernel ipykernel jupyter_kernel_test jsonschema pytest nbconvert ];
 
-  # Tests require jupyter_kernel_test to run, but it hasn't seen a
-  # release since 2017 and seems slightly abandoned.
-  # Doing fetchPypi on it doesn't work, even though it exists here:
-  # https://pypi.org/project/jupyter_kernel_test/.
-  doCheck = false;
+  launcher = with pkgs;runCommand "octave-kernel-launcher" {
+    inherit octave;
+    python = python3.withPackages (ps: [ ps.traitlets ps.jupyter_core ps.ipykernel ps.metakernel ]);
+    buildInputs = [ makeWrapper ];
+  } ''
+    mkdir -p $out/bin
+
+    makeWrapper $python/bin/python $out/bin/octave-kernel \
+      --add-flags "-m octave_kernel" \
+      --suffix PATH : $octave/bin
+  '';
+  preCheck = ''
+    mkdir home
+    export HOME=home
+    mkdir -p kernels/octave/
+    echo '${
+      builtins.toJSON {
+        argv = ["${launcher}/bin/octave-kernel" "-f" "{connection_file}"];
+        name = "octave";
+        language = "octave";
+      }
+    }' > kernels/octave/kernel.json
+
+    echo hi
+    cat kernels/octave/kernel.json
+    echo hi2
+    export JUPYTER_PATH=$(pwd)
+    
+  '';
+
+  # doCheck = false;
 
   meta = with lib; {
     description = "A Jupyter kernel for Octave.";
