@@ -8,7 +8,7 @@ buildPythonPackage rec {
     sha256 = "sha256-evJVzmEwniwIcJq69sfOpd4xJajrM66hZpl/mUh/9DQ=";
   };
 
-  buildInputs = [ jupyter-client jsonschema];
+  buildInputs = [ jupyter-client jsonschema ];
 
   checkInputs = [ ipykernel
   ];
