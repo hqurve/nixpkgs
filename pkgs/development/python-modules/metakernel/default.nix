@@ -23,6 +23,12 @@ buildPythonPackage rec {
   # Tests hang, so disable
   # doCheck = false;
 
+  disabledTests = [
+    "test_download_magic"
+    "test_jigsaw_magic"
+    "test_install_magic_magic"
+  ];
+
   meta = with lib; {
     description = "Jupyter/IPython Kernel Tools";
     homepage = "https://github.com/Calysto/metakernel";
